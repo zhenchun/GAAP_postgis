@@ -1,7 +1,7 @@
 do $$
 declare
 	recpt text := 'gaap_sites_55';
-	dest text := 'ferry';
+	dest text := 'ferry_route';
 	radii text[] = array['05000','03000','01500','01000','00750','00500','00400', '00300','00200', '00150', '00100', '00050'];
 	i text;
 	sql text;
@@ -26,7 +26,7 @@ begin
 		sql := '
 		drop table if exists sites_ll_'|| dest||'_' || i || ';
 		create table sites_ll_'|| dest||'_' || i || ' as
-		select b.id, coalesce(intsct.length, 0) as ll_'|| dest||'_s' || i || '
+		select b.id, coalesce(intsct.length, 0) as ll_road_'|| dest||'_s' || i || '
 		from buffers as b left join
 		  (select b.id, sum(st_length(st_intersection(r.geom, b.b'|| i ||'))) as length
 			from '|| dest ||' as r, buffers as b

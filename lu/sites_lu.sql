@@ -24,8 +24,8 @@ begin
 		execute 'create index buf_indx_' || i || ' on buffers' || ' using gist (b' || i || ')';
 
 		sql := '
-		drop table if exists lu_s' || i || ';
-		create table lu_s' || i || ' as
+		drop table if exists sites_lu_' || i || ';
+		create table sites_lu_' || i || ' as
 		with intsct as (
 			       select b.id, c.dn, sum(st_area(st_intersection(c.geom, b.b'|| i ||'))) as area
 			       from '|| landuse ||' as c, buffers as b
@@ -104,7 +104,7 @@ begin
                               from buffers as b left join intsct
                               on b.id = intsct.id
                               where intsct.dn = ''60''
-                              group by b.id
+                              group by b.id, intsct.area
 		              ) as WAT
                           on SFS.id = WAT.id
                           left join
@@ -112,7 +112,7 @@ begin
                               from buffers as b left join intsct
                               on b.id = intsct.id
                               where intsct.dn = ''80''
-                              group by b.id
+                              group by b.id, intsct.area
                               ) as IPV
                           on SFS.id = IPV.id
                           left join
@@ -120,7 +120,7 @@ begin
                                from buffers as b left join intsct
                                on b.id = intsct.id
                                where intsct.dn = ''90''
-                               group by b.id
+                               group by b.id, intsct.area
 		               ) as BAR
                           on SFS.id = BAR.id';
                           execute sql;

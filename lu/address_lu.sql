@@ -24,8 +24,8 @@ begin
 		execute 'create index buf_indx_' || i || ' on buffers' || ' using gist (b' || i || ')';
 
 		sql := '
-		drop table if exists lu_s' || i || ';
-		create table lu_s' || i || ' as
+		drop table if exists address_lu_' || i || ';
+		create table address_lu_' || i || ' as
 		with intsct as (
 			select b.id, c.dn, sum(st_area(st_intersection(c.geom, b.b'|| i ||'))) as area
 			from '|| landuse ||' as c, buffers as b

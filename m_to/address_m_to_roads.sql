@@ -64,8 +64,8 @@ begin
            foreach p in array type	
            loop
                
-                     sql :=' alter table address_m_to_roads add m_to_'|| p ||' double precision;
-                     update address_m_to_roads set m_to_'|| p ||'='|| p ||'.distance from '|| p ||' where address_m_to_roads.id= '|| p ||'.id';   
+                     sql :=' alter table address_m_to_roads add m_to_sh'|| p ||' double precision;
+                     update address_m_to_roads set m_to_sh'|| p ||'='|| p ||'.distance from '|| p ||' where address_m_to_roads.id= '|| p ||'.id';   
                 execute sql;
                 end loop;
           

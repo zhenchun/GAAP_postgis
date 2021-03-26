@@ -56,8 +56,8 @@ begin
 		               execute sql;
 
                            sql :=' 
-                           alter table address_ll_roads_s'|| i ||' add ll_sh'|| p ||'_'|| i ||' double precision;
-                           update address_ll_roads_s'|| i ||' set ll_sh'|| p ||'_'|| i ||'='|| p ||'_' || i || '.totallength from '|| p ||'_' || i || ' where address_ll_roads_s'|| i ||'.id= '|| p ||'_' || i || '.id';   
+                           alter table address_ll_roads_s'|| i ||' add ll_sh'|| p ||'_s'|| i ||' double precision;
+                           update address_ll_roads_s'|| i ||' set ll_sh'|| p ||'_s'|| i ||'='|| p ||'_' || i || '.totallength from '|| p ||'_' || i || ' where address_ll_roads_s'|| i ||'.id= '|| p ||'_' || i || '.id';   
                            execute sql;
                            
                            sql :='drop table '|| p ||'_' || i || '';

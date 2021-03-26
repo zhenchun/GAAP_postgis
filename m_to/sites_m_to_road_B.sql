@@ -31,21 +31,21 @@ $$ language 'plpgsql' stable;
 
 do $$
 declare
-        recpt text := 'gaap_sh_clean_3919';
-        dest text := 'ferry_route';
+        recpt text := 'gaap_sites_55';
+        dest text := 'road_b';
         sql text;
 begin
 
-              sql :=' drop table if exists address_m_to_'|| dest ||';        
-              create table address_m_to_'|| dest ||' as 
+              sql :=' drop table if exists sites_m_to_'|| dest ||';        
+              create table sites_m_to_'|| dest ||' as 
               with nn as (
 	          select distinct r.id, r.geom, 
 	          nnid(r.geom, 1000, 2, 100, '''|| dest ||''', ''gid'', ''geom'') as nn_all
 	          from '|| recpt ||' as r
 	          )
-	          select DMR.id, DMR.m_to_road_'|| dest ||'
+	          select DMR.id, DMR.m_to_'|| dest ||'
 	          from
-                  (select nn.id, st_distance(nn.geom, t.geom) as m_to_road_'|| dest ||'
+                  (select nn.id, st_distance(nn.geom, t.geom) as m_to_'|| dest ||'
 	          from nn left join '|| dest ||' as t 
 	          on nn.nn_all = t.gid
 	          ) as DMR';
