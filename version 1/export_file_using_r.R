@@ -10,76 +10,13 @@ setwd("C:/Users/zy125/Box Sync/Postdoc/GAAP/GIS")
 
 
 
-
-for (i in c('5000','3000','1500','1000','750','500','400', '300','200', '150', '100', '50')){
-  
- 
-  
-  data<-dbGetQuery(con, paste("SELECT * from ll_road_shxd_", i, sep=""))
-  
-  write.csv(data, paste("ll_road_shxd_", i, ".csv", sep=""))
-  
-  
-}
-
-
-
-
-data<-dbGetQuery(con, "SELECT * from sites_m_to_suzhou_river")
-
-write.csv(data, paste("m_to_suzhou_river.csv", sep=""))
-
-
-load("9.6_geocovars_site55.Rdata")
-
-
-geo_55<-merge(geocovars, ll_suzhou, by="location_id")
-
-
-geo_55<-merge(geo_55, m_to_suzhou_river, by="location_id")
-
-
-geocovars<-geo_55
-save(geocovars,file="9.7_geocovars_site55.Rdata")
-
-
-
-
-
-
-
-
-load("geocovars_gaap_v9.6.Rdata")
-
-
-geocovars<-merge(geocovars, ll_suzhou, by="location_id")
-
-
-geocovars<-merge(geocovars, m_to_suzhou_river, by="location_id")
-
-
-save(geocovars,file="geocovars_gaap_v9.7.Rdata")
-
 #############################site 55 tables
 
 sites<-dbListTables(con)[grepl('^sites', dbListTables(con))]
-  
+s<-dbGetQuery(con, "SELECT * from sites_m_to_coast")
 
-  
-
-
-d<-dbGetQuery(con, "SELECT * from sites_m_to_costal")
-
-
-for(i in 1: length(sites)){
-  
-  dbExecute(con, paste("DROP TABLE " ,sites[i]))
-  
-  }
-  
-
-d1<-as.data.frame(d[,1])
-colnames(d1)<-"id"
+s1<-as.data.frame(s[,1])
+colnames(s1)<-"id"
 
 for (i in 1:length(sites)){
   
@@ -87,16 +24,14 @@ for (i in 1:length(sites)){
   
   data<-dbGetQuery(con, paste("SELECT * from ", sites[i], sep=""))
   
-  d1<-merge(d1, data, by="id")
-  
-  colnames(d1)[i+1]<-sites[i]
+  s1<-merge(s1, data, by="id")
   
   
   
 }
 
 
-str_sub(colnames(d1)[2:273], 7)
+
 
 #########################################addresses
 
@@ -104,27 +39,27 @@ con<-dbConnect(dbDriver("PostgreSQL"), dbname="gaap", host="localhost", port=543
 
 address<-dbListTables(con)[grepl('^address', dbListTables(con))]
 
-d<-dbGetQuery(con, "SELECT * from address_ll_ferry_00050")
+a<-dbGetQuery(con, "SELECT * from address_ll_ferry_route_00050")
 
 
-d1<-as.data.frame(d[,1])
-colnames(d1)<-"id"
+a1<-as.data.frame(a[,1])
+colnames(a1)<-"id"
 
 for (i in 1:length(address)){
   
   
   
-  data<-dbGetQuery(con, paste("SELECT * from ", address[i], sep=""))
+  dat<-dbGetQuery(con, paste("SELECT * from ", address[i], sep=""))
   
-  d1<-merge(d1, data, by="id")
+  a1<-merge(a1, dat, by="id")
   
   
 }
 
-colnames(d1)[1]<-"location_id"
+colnames(a1)[1]<-"location_id"
 
 
-d1<-d1[!grepl('^lu_surface', colnames(d1))] 
+a1<-a1[!grepl('^lu_surface', colnames(a1))] 
 
 load("geocovars_gaap_v9.8.Rdata")
 

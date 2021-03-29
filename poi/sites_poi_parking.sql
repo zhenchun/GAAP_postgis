@@ -1,7 +1,7 @@
 do $$
 declare
 	recpt text := 'gaap_sites_55';
-	poi text := 'sh_poi_terminal';
+	poi text := 'sh_poi_parking';
 	radii text[] = array['15000','10000','07500','05000','03000','02500','02000','01500','01000', '00500','00250'];
 	i text;
 	sql text;
@@ -24,9 +24,9 @@ begin
 		execute 'create index buf_indx_' || i || ' on buffers' || ' using gist (b' || i || ')';
 
 		sql := '
-		drop table if exists sites_poi_terminal_s' || i || ';
-		create table sites_poi_terminal_s' || i || ' as
-		select b.id, coalesce(count(d.geom), 0) as poi_terminal_s' || i || '
+		drop table if exists sites_poi_parking_s' || i || ';
+		create table sites_poi_parking_s' || i || ' as
+		select b.id, coalesce(count(d.geom), 0) as poi_parking_s' || i || '
 		from buffers as b left join '||poi||' as d
 		on st_contains(b.b'|| i ||', d.geom)
 		group by b.id';

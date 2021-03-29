@@ -26,7 +26,7 @@ begin
 		sql := '
 		drop table if exists address_ll_'|| dest||'_' || i || ';
 		create table address_ll_'|| dest||'_' || i || ' as
-		select b.id, coalesce(intsct.length, 0) as ll_'|| dest||'_s' || i || '
+		select b.id, coalesce(intsct.length, 0) as ll_road_'|| dest||'_s' || i || '
 		from buffers as b left join
 		  (select b.id, sum(st_length(st_intersection(r.geom, b.b'|| i ||'))) as length
 			from '|| dest ||' as r, buffers as b
