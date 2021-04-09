@@ -30,8 +30,12 @@ for (i in 1:length(sites)){
   
 }
 
+colnames(s1)[1]<-"location_id"
 
+load("site_55_geocovars_v9.8.Rdata")
+add<-geocovars[c(1:8,271:288)]
 
+geocovars<-merge(add, s1, by="location_id")
 
 #########################################addresses
 
@@ -90,4 +94,60 @@ geo_address2<-geo_address[, !(colnames(geo_address) %in% diff2)]
 require(arsenal)
 
 summary(comparedf(d2, geo_address2))
+
+##################################################################################
+
+
+cmd <- 'ssh::ssh_tunnel(ssh::ssh_connect(host = "vcm@dku-vcm-1315.vm.duke.edu", passwd = "dipre3ybro"), port = 5433, target = paste0("localhost:", 5432)))'
+
+pid <- sys::r_background(
+  std_out = FALSE,
+  std_err = FALSE,
+  args = c("-e", cmd)
+)
+con_remote<-dbConnect(
+  dbDriver("PostgreSQL"),
+  host = "localhost",
+  port = 5433,
+  user = "postgres",
+  password = "123",
+  dbname = "gaap"
+)
+
+######################################################################
+
+dbListTables(con_remote)
+
+
+#########################################################################################
+
+points<-dbListTables(con_remote)[grepl('^points', dbListTables(con_remote))]
+
+c<-dbGetQuery(con_remote, "SELECT * from points_ll_ferry_route_00050")
+
+
+c1<-as.data.frame(c[,1])
+colnames(c1)<-"id"
+
+for (i in 1:length(points)){
+  
+  
+  
+  dat<-dbGetQuery(con_remote, paste("SELECT * from ", points[i], sep=""))
+  
+  c1<-merge(c1, dat, by="id")
+  
+  
+}
+
+colnames(c1)[1]<-"location_id"
+
+
+c1<-c1[!grepl('^lu_surface', colnames(c1))] 
+
+load("geocovars_gaap_v9.8.Rdata")
+
+
+
+
 
