@@ -100,6 +100,8 @@ summary(comparedf(d2, geo_address2))
 
 cmd <- 'ssh::ssh_tunnel(ssh::ssh_connect(host = "vcm@dku-vcm-1315.vm.duke.edu", passwd = "dipre3ybro"), port = 5433, target = paste0("localhost:", 5432)))'
 
+#######connect using putty
+
 pid <- sys::r_background(
   std_out = FALSE,
   std_err = FALSE,
