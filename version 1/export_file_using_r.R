@@ -162,6 +162,18 @@ colnames(c1)[1]<-"location_id"
 
 c1<-c1[!grepl('^lu_surface', colnames(c1))] 
 
+
+colnames(c1)<-gsub(x =colnames(c1), pattern = "road_a", replacement = "road_A")  
+
+colnames(c1)<-gsub(x =colnames(c1), pattern = "road_b", replacement = "road_B")
+
+colnames(c1)<-gsub(x =colnames(c1), pattern = "road_c", replacement = "road_C")
+
+colnames(c1)<-gsub(x =colnames(c1), pattern = "road_d", replacement = "road_D")
+
+
+
+
 load("geocovars_gaap_v9.8.Rdata")
 
 
