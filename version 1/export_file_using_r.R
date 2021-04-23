@@ -31,11 +31,26 @@ for (i in 1:length(sites)){
 }
 
 colnames(s1)[1]<-"location_id"
+s1<-s1[!grepl('^lu_surface', colnames(s1))] 
+
+
+colnames(s1)<-gsub(x =colnames(s1), pattern = "road_a", replacement = "road_A")  
+
+colnames(s1)<-gsub(x =colnames(s1), pattern = "road_b", replacement = "road_B")
+
+colnames(s1)<-gsub(x =colnames(s1), pattern = "road_c", replacement = "road_C")
+
+colnames(s1)<-gsub(x =colnames(s1), pattern = "road_d", replacement = "road_D")
+
+
+
 
 load("site_55_geocovars_v9.8.Rdata")
-add<-geocovars[c(1:8,271:288)]
+add<-geocovars[c(1:8,271:275,277:286)]
 
 geocovars<-merge(add, s1, by="location_id")
+
+save(geocovars, "site_55_geocovars_v11.RData")
 
 #########################################addresses
 
