@@ -107,7 +107,7 @@ begin
       where intsct.dn = ''60''
       group by b.id
 		  ) as WAT
-    on SFS.id = WAT.id
+    on SFS.id = WAT.id,intsct.area
     left join
       (select b.id, coalesce(intsct.area, 0) as Impersfc
       from buffers as b left join intsct
@@ -115,13 +115,13 @@ begin
       where intsct.dn = ''80''
       group by b.id
       ) as IPV
-    on SFS.id = IPV.id
+    on SFS.id = IPV.id, intsct.area
     left join
       (select b.id, coalesce(intsct.area, 0) as Bareland
       from buffers as b left join intsct
       on b.id = intsct.id
       where intsct.dn = ''90''
-      group by b.id
+      group by b.id, intsct.area
 		) as BAR
     on SFS.id = BAR.id';
     execute sql;
